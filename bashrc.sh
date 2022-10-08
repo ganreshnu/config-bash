@@ -9,3 +9,4 @@ HISTFILE=$HOME/.local/share/bash/history
 HISTCONTROL=ignoredups:ignorespace
 shopt -s histappend
 shopt -s checkwinsize
+eval "$(starship init bash)"
