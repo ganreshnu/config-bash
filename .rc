@@ -1,7 +1,5 @@
 #
-# bashrc.sh
-#
-# This file is appended to the stock .bashrc and replaces it.
+# bash/.rc
 #
 
 # set the history options
@@ -9,3 +7,10 @@ shopt -s histappend
 shopt -s checkwinsize
 # load the prompt
 eval "$(starship init bash)"
+
+for config in "${XDG_CONFIG_HOME:-$HOME/.config}"/*; do
+	[[ -r "$config/.rc" ]] && . "$config/.rc"
+done
+unset config
+
+# vim: ft=bash
