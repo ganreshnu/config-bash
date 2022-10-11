@@ -10,7 +10,3 @@
 HISTFILE="${XDG_STATE_HOME:-$HOME/.local/state}/bash/history"
 HISTCONTROL=ignoredups:ignorespace
 
-for config in "${XDG_CONFIG_HOME:-$HOME/.config}"/*; do
-	[[ -r "$config/.profile" ]] && . "$config/.profile"
-done
-unset config

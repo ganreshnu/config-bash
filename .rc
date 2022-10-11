@@ -6,11 +6,7 @@
 shopt -s histappend
 shopt -s checkwinsize
 # load the prompt
-eval "$(starship init bash)"
+#eval "$(starship init bash)"
 
-for config in "${XDG_CONFIG_HOME:-$HOME/.config}"/*; do
-	[[ -r "$config/.rc" ]] && . "$config/.rc"
-done
-unset config
 
 # vim: ft=bash
