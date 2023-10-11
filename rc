@@ -1,0 +1,14 @@
+#
+# bash/rc
+#
+
+# set the history options
+shopt -s histappend
+shopt -s checkwinsize
+
+for d in $(<"$HOME/.managed_configs"); do
+	[[ -f "$HOME/$d/.bashrc" ]] && . "$HOME/$d/.bashrc"
+done
+unset d
+
+# vim: ft=bash
