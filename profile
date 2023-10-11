@@ -12,7 +12,7 @@ PATH="$HOME/.local/bin:$PATH"
 HISTFILE="${XDG_STATE_HOME:-$HOME/.local/state}/bash/history"
 HISTCONTROL=ignoredups:ignorespace
 
-for d in $(<"$HOME/.managed_configs"); do
+for d in $(<"${XDG_STATE_HOME:-$HOME/.local/state}/user_config_dirs"); do
 	[[ -f "$HOME/$d/.bash_profile" ]] && . "$HOME/$d/.bash_profile"
 done
 unset d
