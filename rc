@@ -6,6 +6,14 @@
 shopt -s histappend
 shopt -s checkwinsize
 
+# make the xdg state directory
+[[ ! -d "${XDG_STATE_HOME:-$HOME/.local/state}/bash" ]] \
+	&& mkdir -p "${XDG_STATE_HOME:-$HOME/.local/state}/bash"
+
+# history variables
+HISTFILE="${XDG_STATE_HOME:-$HOME/.local/state}/bash/history"
+HISTCONTROL=ignoredups:ignorespace
+
 for d in $(<"${XDG_STATE_HOME:-$HOME/.local/state}/user_config_dirs"); do
 	[[ -f "$HOME/$d/.bashrc" ]] && . "$HOME/$d/.bashrc"
 done
