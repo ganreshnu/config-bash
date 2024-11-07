@@ -19,4 +19,6 @@ for d in $(<"${XDG_STATE_HOME:-$HOME/.local/state}/user_config_dirs"); do
 done
 unset d
 
+alias mkosi='mkosi -i --cache-dir=${XDG_CACHE_HOME:-$HOME/.cache}/mkosi.cache'
+
 # vim: ft=bash
