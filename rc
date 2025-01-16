@@ -19,9 +19,44 @@ for d in $(<"${XDG_STATE_HOME:-$HOME/.local/state}/user_config_dirs"); do
 done
 unset d
 
-if [[ -x $(type -p starship) ]]; then
-	eval "$(starship init bash)"
-fi
+# if [[ -x $(type -p starship) ]]; then
+# 	eval "$(starship init bash)"
+# fi
+
+__color() {
+	local color="$1"; shift
+	printf "$(tput setaf $color)%s$(tput sgr0)" "$*"
+}
+__style() {
+	local style="$1"; shift
+	printf "$(tput $style)%s$(tput sgr0)" "$*"
+}
+
+PROMPT_COMMAND=__prompt_command
+__prompt_command() {
+	local exitCode="$?"
+
+
+	__status() {
+		if git rev-parse 2>/dev/null; then
+			local branch="$(git branch --show-current)"
+			printf ' on %s' "$(__color 4 "$branch")"
+		fi
+	}
+	PS1_GIT="$(__status)"
+
+	local color=2
+	if [[ $exitCode != 0 ]]; then
+		color=1
+	fi
+	PS1_RESULT="$(__color "$color" '>')"
+
+	return "$exitCode"
+}
+
+__ps1_hostname="$(__color 8 '\h')"
+__ps1_hostname="$(__style bold "$__ps1_hostname")"
+PS1=$( printf '%s:%s$PS1_GIT\n$PS1_RESULT ' "$__ps1_hostname" "$(__color 13 '\w')" )
 
 alias mkosi='mkosi -i --cache-dir=${XDG_CACHE_HOME:-$HOME/.cache}/mkosi.cache'
 
@@ -44,5 +79,6 @@ qemu() {
 
 	return 0
 }
+
 # WLR_DRM_DEVICES=/dev/dri/card2:/dev/dri/card1
 # vim: ft=bash
