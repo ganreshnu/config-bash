@@ -60,25 +60,9 @@ PS1=$( printf '%s:%s$PS1_GIT\n$PS1_RESULT ' "$__ps1_hostname" "$(__color 13 '\w'
 
 alias mkosi='mkosi -i --cache-dir=${XDG_CACHE_HOME:-$HOME/.cache}/mkosi.cache'
 
-qemu() {
-	file="$1"
-	if [[ -z "$file" ]]; then
-		printf "%s\n" 'need a disk image to boot'
-		return 1
-	fi
-	display='-display spice-app -spice disable-ticketing=on,port=5900 -vga qxl'
-	machine='-machine q35,accel=kvm -m 8G -smp 4 -object rng-random,id=rng0,filename=/dev/urandom -device virtio-rng-pci,rng=rng0'
-	drive="-drive if=virtio,file=${file},format=raw"
-
-	qemu-system-x86_64 ${display} -serial stdio \
-		${machine} \
-		-cpu host -net none \
-		-drive if=pflash,format=raw,unit=0,file=/usr/share/edk2-ovmf/x64/OVMF.4m.fd,readonly=on \
-		-drive if=pflash,format=raw,unit=1,file=OVMF_VARS.4m.fd \
-		${drive}
-
-	return 0
-}
+# alias spack='podman run --rm -it -v $PWD:$PWD -w $PWD -v $HOME/Spack/spack-cache:/cache -v $HOME/Spack/spack-gpg:/opt/spack/opt/spack/gpg -v $HOME/Spack/spack-repo:/repo -v $HOME/Spack/spack-download:/opt/spack/var/spack/cache -v /tmp/spack-stage:/tmp/root/spack-stage spack'
+# alias spack='podman run --rm -it -v $PWD:$PWD -w $PWD -v /tmp:/tmp -v $HOME/.cache/spack:/cache -v $HOME/Spack/spack-gpg:/gpg spack'
+# . ${XDG_CONFIG_HOME:-$HOME/.config}/bash/rc
 
 # WLR_DRM_DEVICES=/dev/dri/card2:/dev/dri/card1
 # vim: ft=bash
