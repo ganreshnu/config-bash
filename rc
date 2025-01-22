@@ -2,10 +2,11 @@
 # bash/rc
 #
 
-# set the history options
-shopt -s histappend
-shopt -s checkwinsize
+# globs include dotfiles
+shopt -s dotglob
+shopt -s globstar
 
+# set the history options
 # make the xdg state directory
 [[ ! -d "${XDG_STATE_HOME:-$HOME/.local/state}/bash" ]] \
 	&& mkdir -p "${XDG_STATE_HOME:-$HOME/.local/state}/bash"
@@ -13,15 +14,16 @@ shopt -s checkwinsize
 # history variables
 HISTFILE="${XDG_STATE_HOME:-$HOME/.local/state}/bash/history"
 HISTCONTROL=ignoredups:ignorespace
+shopt -s histappend
+shopt -s histverify
+shopt -s cmdhist
+shopt -s lithist
 
+# include each bashrc from user configurations
 for d in $(<"${XDG_STATE_HOME:-$HOME/.local/state}/user_config_dirs"); do
 	[[ -f "$HOME/$d/.bashrc" ]] && . "$HOME/$d/.bashrc"
 done
 unset d
-
-# if [[ -x $(type -p starship) ]]; then
-# 	eval "$(starship init bash)"
-# fi
 
 __color() {
 	local color="$1"; shift
