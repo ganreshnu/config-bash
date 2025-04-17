@@ -1,6 +1,8 @@
 #
 # bash/rc
 #
+# If not running interactively, don't do anything
+[[ $- != *i* ]] && return
 
 # globs include dotfiles
 shopt -s dotglob
@@ -25,13 +27,22 @@ for d in $(<"${XDG_STATE_HOME:-$HOME/.local/state}/user_config_dirs"); do
 done
 unset d
 
+# mkosi() {
+# 	if [[ ! -d mkosi.output ]]; then
+# 		1>&2 printf "$(tput setaf 9)!!$(tput sgr0) %s\n" "directory mkosi.output does not exist"
+# 		return 1
+# 	fi
+# 	mkosi -i --cache-dir=${XDG_CACHE_HOME:-$HOME/.cache}/mkosi.cache \
+# 		--output-dir=$(ls -d mkosi.output) --build-dir=mkosi.build
+# }
+
 __color() {
 	local color="$1"; shift
-	printf "$(tput setaf $color)%s$(tput sgr0)" "$*"
+	printf "\[$(tput setaf $color)\]%s\[$(tput sgr0)\]" "$*"
 }
 __style() {
 	local style="$1"; shift
-	printf "$(tput $style)%s$(tput sgr0)" "$*"
+	printf "\[$(tput $style)\]%s\[$(tput sgr0)\]" "$*"
 }
 
 PROMPT_COMMAND=__prompt_command
@@ -45,26 +56,23 @@ __prompt_command() {
 			printf ' on %s' "$(__color 4 "$branch")"
 		fi
 	}
-	PS1_GIT="$(__status)"
+	# PS1_GIT="$(__status)"
 
 	local color=2
 	if [[ $exitCode != 0 ]]; then
 		color=1
 	fi
-	PS1_RESULT="$(__color "$color" '>')"
+	# PS1_RESULT="$(__color "$color" '\$')"
+	PS1_RESULT="$color"
 
 	return "$exitCode"
 }
 
-__ps1_hostname="$(__color 8 '\h')"
-__ps1_hostname="$(__style bold "$__ps1_hostname")"
-PS1=$( printf '%s:%s$PS1_GIT\n$PS1_RESULT ' "$__ps1_hostname" "$(__color 13 '\w')" )
+PS1='[\[$(tput setaf 8)\]\h\[$(tput sgr0)\] \[$(tput setaf 3)\]\W\[$(tput sgr0)\]]\[$(tput setaf $PS1_RESULT)\]$\[$(tput sgr0)\] '
 
-alias mkosi='mkosi -i --cache-dir=${XDG_CACHE_HOME:-$HOME/.cache}/mkosi.cache'
 
-# alias spack='podman run --rm -it -v $PWD:$PWD -w $PWD -v $HOME/Spack/spack-cache:/cache -v $HOME/Spack/spack-gpg:/opt/spack/opt/spack/gpg -v $HOME/Spack/spack-repo:/repo -v $HOME/Spack/spack-download:/opt/spack/var/spack/cache -v /tmp/spack-stage:/tmp/root/spack-stage spack'
-# alias spack='podman run --rm -it -v $PWD:$PWD -w $PWD -v /tmp:/tmp -v $HOME/.cache/spack:/cache -v $HOME/Spack/spack-gpg:/gpg spack'
-# . ${XDG_CONFIG_HOME:-$HOME/.config}/bash/rc
+# include aliases
+. ${XDG_CONFIG_HOME:-$HOME/.config}/bash/aliases
 
 # WLR_DRM_DEVICES=/dev/dri/card2:/dev/dri/card1
 # vim: ft=bash
