@@ -15,5 +15,6 @@ alias cpv='rsync --archive --human-readable --info=PROGRESS2'
 alias spack='podman run --rm -it -v ${XDG_CACHE_HOME:-$HOME/.cache}/spack:/cache -v $(mkdir -p /tmp/spack-stage && echo /tmp/spack-stage):/stage -v ${HOME}/Spack/spack-gpg:/gpg -v $PWD:$PWD -w $PWD spack'
 
 alias prun='podman run --rm -it -v "$PWD":"$PWD" -w "$PWD"'
+alias picocom='picocom -b 115200'
 
 # vim: ft=bash
