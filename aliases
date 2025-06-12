@@ -17,4 +17,8 @@ alias spack='podman run --rm -it -v ${XDG_CACHE_HOME:-$HOME/.cache}/spack:/cache
 alias prun='podman run --rm -it -v "$PWD":"$PWD" -w "$PWD"'
 alias picocom='picocom -b 115200'
 
+if [[ -r "$HOME/.aliases" ]]; then
+	. "$HOME/.aliases"
+fi
+
 # vim: ft=bash
