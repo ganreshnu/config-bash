@@ -15,7 +15,7 @@ shopt -s globstar
 
 # history variables
 HISTFILE="${XDG_STATE_HOME:-$HOME/.local/state}/bash/history"
-HISTCONTROL=ignoredups:ignorespace
+HISTCONTROL=ignoredups:ignorespace:erasedups
 shopt -s histappend
 shopt -s histverify
 shopt -s cmdhist
@@ -36,15 +36,33 @@ unset d
 # 		--output-dir=$(ls -d mkosi.output) --build-dir=mkosi.build
 # }
 
-__color() {
+Color() {
 	local color="$1"; shift
-	printf "\[$(tput setaf $color)\]%s\[$(tput sgr0)\]" "$*"
+	printf "$(tput setaf "$color")%s$(tput sgr0)" "$*"
 }
-__style() {
+Italics() {
+	printf "$(tput sitm)%s$(tput ritm)" "$*"
+}
+Style() {
 	local style="$1"; shift
-	printf "\[$(tput $style)\]%s\[$(tput sgr0)\]" "$*"
+	printf "$(tput "$style")%s$(tput sgr0)" "$*"
 }
-
+#
+# simple argument parser.
+# Usage: ExpectArg val cnt
+# the first 2 parameters are value and count followed by the program arguments.
+ExpectArg() {
+	local -n v="$1"; shift
+	local -n c="$1"; shift
+	local name="${1%%=*}"
+	c=0
+	if [[ "$1" == "${name}" ]]; then
+		(( $# < 2 )) && { >&2 printf "${ tput setaf 1; }%s:${ tput sgr0; } ${ tput bold; }${ tput sitm; }%s${ tput ritm; }${ tput sgr0; } expects a value.\n" "${BASH_SOURCE[1]}" "$1"; } && return 1
+		v="$2"; c=1
+		return 0
+	fi
+	v="${1#*=}"
+}
 PROMPT_COMMAND=__prompt_command
 __prompt_command() {
 	local exitCode="$?"
@@ -72,7 +90,7 @@ PS1='[\[$(tput setaf 8)\]\h\[$(tput sgr0)\] \[$(tput setaf 3)\]\W\[$(tput sgr0)\
 
 
 # include aliases
-. ${XDG_CONFIG_HOME:-$HOME/.config}/bash/aliases
+. "${XDG_CONFIG_HOME:-$HOME/.config}"/bash/aliases
 
 # WLR_DRM_DEVICES=/dev/dri/card2:/dev/dri/card1
 # vim: ft=bash
