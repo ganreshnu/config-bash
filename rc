@@ -92,7 +92,7 @@ PS1='[\[$(tput setaf 8)\]\h\[$(tput sgr0)\] \[$(tput setaf 3)\]\W\[$(tput sgr0)\
 # include aliases
 . "${XDG_CONFIG_HOME:-$HOME/.config}"/bash/aliases
 
-export SSH_AUTH_SOCK=${ gpgconf --list-dirs agent-ssh-socket; }
+# export SSH_AUTH_SOCK=${ gpgconf --list-dirs agent-ssh-socket; }
 
 # WLR_DRM_DEVICES=/dev/dri/card2:/dev/dri/card1
 # vim: ft=bash
