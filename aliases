@@ -16,6 +16,7 @@ alias spack='podman run --rm -it -v ${XDG_CACHE_HOME:-$HOME/.cache}/spack:/cache
 
 alias prun='podman run --rm -it -v "$PWD":"$PWD" -w "$PWD"'
 alias picocom='picocom -b 115200'
+# alias cargo='podman run --rm -ti -v /usr/lib/pkgconfig:/usr/lib/pkgconfig -v "$PWD":"$PWD" -w "$PWD" rust cargo'
 
 if [[ -r "$HOME/.aliases" ]]; then
 	. "$HOME/.aliases"
