@@ -67,7 +67,6 @@ PROMPT_COMMAND=__prompt_command
 __prompt_command() {
 	local exitCode="$?"
 
-
 	__status() {
 		if git rev-parse 2>/dev/null; then
 			local branch="$(git branch --show-current)"
@@ -85,9 +84,7 @@ __prompt_command() {
 
 	return "$exitCode"
 }
-
 PS1='[\[$(tput setaf 8)\]\h\[$(tput sgr0)\] \[$(tput setaf 3)\]\W\[$(tput sgr0)\]]\[$(tput setaf $PS1_RESULT)\]$\[$(tput sgr0)\] '
-
 
 # include aliases
 . "${XDG_CONFIG_HOME:-$HOME/.config}"/bash/aliases
